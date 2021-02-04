@@ -1,9 +1,13 @@
 package com.example.cohort;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hl7.fhir.r4.model.MeasureReport;
+import org.opencds.cqf.cql.engine.runtime.DateTime;
+import org.opencds.cqf.cql.engine.runtime.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +40,14 @@ public class App
         IGenericClient measureServerClient = builder.createFhirClient(config);
         MeasureEvaluator evaluator = new MeasureEvaluator(dataServerClient, terminologyServerClient, measureServerClient);
 
-        MeasureReport measureReport = evaluator.evaluatePatientMeasure("wh-cohort-Over-the-Hill-Male-1.0.0-identifier", "17672577005-c9ce8b3a-1942-43a9-a886-e8b4e954b014", new HashMap<>());
+        // Use strongly typed objects for parameters. For examples of constructing supported types see: 
+        // https://github.com/Alvearie/quality-measure-and-cohort-service/blob/0501fa4e2adec384f9f82c1333ed6c786e39c470/cohort-cli/src/main/java/com/ibm/cohort/cli/ParameterHelper.java#L87
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("Measurement Period", new Interval(new DateTime("2020-01-01T00:00:00", OffsetDateTime.now().getOffset()), true, new DateTime("2020-12-31T23:59:59", OffsetDateTime.now().getOffset()), true));
+        parameters.put("FakeIntegerParameter", 10);
+        parameters.put("FakeDecimalParameter", BigDecimal.valueOf(1.439832));
+
+        MeasureReport measureReport = evaluator.evaluatePatientMeasure("wh-cohort-Over-the-Hill-Male-1.0.0-identifier", "17672577005-c9ce8b3a-1942-43a9-a886-e8b4e954b014", parameters);
         if (measureReport != null) {
             IParser parser = fhirContext.newJsonParser().setPrettyPrint(true);
             logger.info(parser.encodeResourceToString(measureReport));
