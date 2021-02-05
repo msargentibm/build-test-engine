@@ -11,10 +11,11 @@ import org.opencds.cqf.cql.engine.runtime.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ibm.cohort.engine.FhirClientBuilder;
-import com.ibm.cohort.engine.FhirClientBuilderFactory;
-import com.ibm.cohort.engine.FhirServerConfig;
+
 import com.ibm.cohort.engine.measure.MeasureEvaluator;
+import com.ibm.cohort.fhir.client.config.FhirClientBuilder;
+import com.ibm.cohort.fhir.client.config.FhirClientBuilderFactory;
+import com.ibm.cohort.fhir.client.config.FhirServerConfig;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
