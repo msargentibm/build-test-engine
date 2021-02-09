@@ -2,7 +2,9 @@ package com.example.cohort;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r4.model.MeasureReport;
@@ -68,6 +70,10 @@ public class App
         //  FHIR Server URL
         fhirServerConfig.setEndpoint("https://localhost:9443/fhir-server/api/v4");
         fhirServerConfig.setHeaders(headers);
+
+        List<FhirServerConfig.LogInfo> loginfo = new ArrayList<>();
+        loginfo.add(FhirServerConfig.LogInfo.RESPONSE_SUMMARY);
+        fhirServerConfig.setLogInfo(loginfo);
         
         return fhirServerConfig;
     }
